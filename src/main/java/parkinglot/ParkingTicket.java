@@ -4,6 +4,7 @@ import java.util.UUID;
 import parkinglot.vehicle.Vehicle;
 
 public class ParkingTicket {
+
     private final UUID ticketId;
     private final String spotId;
     private final Vehicle vehicle;

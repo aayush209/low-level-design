@@ -19,6 +19,7 @@ import parkinglot.vehicle.VehicleType;
 
 @Slf4j
 public class ParkingLotSystemDemo {
+
     public static void main(String[] args) {
         // Initialize Parking Spots for each Level
         List<ParkingSpot> level1Spots = new ArrayList<>();
@@ -82,7 +83,9 @@ public class ParkingLotSystemDemo {
             if (!tickets.isEmpty()) {
                 ParkingTicket ticket;
                 synchronized (tickets) {
-                    if (tickets.isEmpty()) return;
+                    if (tickets.isEmpty()) {
+                        return;
+                    }
                     ticket = tickets.remove(0);
                 }
                 try {

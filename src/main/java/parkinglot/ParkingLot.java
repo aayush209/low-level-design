@@ -12,6 +12,7 @@ import parkinglot.vehicle.VehicleType;
 
 @Slf4j
 public class ParkingLot {
+
     private final List<Level> levels;
     private final Map<UUID, ParkingTicket> activeTickets = new ConcurrentHashMap<>();
 

@@ -7,6 +7,7 @@ import parkinglot.vehicle.Vehicle;
 import parkinglot.vehicle.VehicleType;
 
 public class Level {
+
     private final int levelNumber;
     private final List<ParkingSpot> spots;
     private final ReentrantLock lock = new ReentrantLock();

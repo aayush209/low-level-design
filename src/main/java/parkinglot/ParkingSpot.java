@@ -4,6 +4,7 @@ import parkinglot.vehicle.Vehicle;
 import parkinglot.vehicle.VehicleType;
 
 public class ParkingSpot {
+
     private final String spotId;
     private final VehicleType type;
     private volatile boolean isOccupied;
