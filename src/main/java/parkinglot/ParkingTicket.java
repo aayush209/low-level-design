@@ -1,8 +1,10 @@
 package parkinglot;
 
 import java.util.UUID;
+import lombok.Getter;
 import parkinglot.vehicle.Vehicle;
 
+@Getter
 public class ParkingTicket {
 
     private final UUID ticketId;
@@ -15,21 +17,5 @@ public class ParkingTicket {
         this.spotId = spotId;
         this.vehicle = vehicle;
         this.entryTime = System.currentTimeMillis();
-    }
-
-    public UUID getTicketId() {
-        return ticketId;
-    }
-
-    public String getSpotId() {
-        return spotId;
-    }
-
-    public Vehicle getVehicle() {
-        return vehicle;
-    }
-
-    public long getEntryTime() {
-        return entryTime;
     }
 }

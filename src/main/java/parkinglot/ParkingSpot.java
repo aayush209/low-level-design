@@ -26,7 +26,7 @@ public class ParkingSpot {
     }
 
     public synchronized boolean assignVehicle(Vehicle vehicle) {
-        if (!isOccupied && canFitVehicle(vehicle.getType())) {
+        if (!isOccupied && canFitVehicle(vehicle.getVehicleType())) {
             isOccupied = true;
             currentVehicle = vehicle;
             return true;

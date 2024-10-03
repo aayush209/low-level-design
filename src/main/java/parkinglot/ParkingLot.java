@@ -34,7 +34,7 @@ public class ParkingLot {
                 return ticket;
             }
         }
-        throw new Exception("No available parking spots for vehicle type: " + vehicle.getType());
+        throw new Exception("No available parking spots for vehicle type: " + vehicle.getVehicleType());
     }
 
     public void unparkVehicle(UUID ticketId) throws Exception {

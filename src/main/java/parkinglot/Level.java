@@ -29,7 +29,7 @@ public class Level {
         lock.lock();
         try {
             for (ParkingSpot spot : spots) {
-                if (!spot.isOccupied() && spot.canFitVehicle(vehicle.getType())) {
+                if (!spot.isOccupied() && spot.canFitVehicle(vehicle.getVehicleType())) {
                     if (spot.assignVehicle(vehicle)) {
                         return Optional.of(spot);
                     }
