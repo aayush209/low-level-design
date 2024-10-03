@@ -26,7 +26,8 @@ public class ParkingLot {
             if (spot.isPresent()) {
                 ParkingTicket ticket = new ParkingTicket(spot.get().getSpotId(), vehicle);
                 activeTickets.put(ticket.getTicketId(), ticket);
-                log.info("Parked Vehicle: {} at Spot: {} on Level: {}",
+                log.info(
+                        "Parked Vehicle: {} at Spot: {} on Level: {}",
                         vehicle.getLicensePlate(),
                         spot.get().getSpotId(),
                         level.getLevelNumber());
@@ -46,7 +47,8 @@ public class ParkingLot {
         for (Level level : levels) {
             if (level.unparkVehicle(spotId)) {
                 unparked = true;
-                log.info("Unparked Vehicle: {} from Spot: {} on Level: {}",
+                log.info(
+                        "Unparked Vehicle: {} from Spot: {} on Level: {}",
                         ticket.getVehicle().getLicensePlate(),
                         spotId,
                         level.getLevelNumber());

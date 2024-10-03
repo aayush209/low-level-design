@@ -58,45 +58,50 @@ public class ParkingLotSystemDemo {
         List<ParkingTicket> tickets = Collections.synchronizedList(new ArrayList<>());
 
         // Simulate Parking Vehicles
-        Runnable parkTask = () -> {
-            Vehicle vehicle;
-            // Randomly decide vehicle type
-            int rand = new Random().nextInt(3);
-            vehicle = switch (rand) {
-                case 0 -> new MotorCycle("MC-" + UUID.randomUUID().toString().substring(0, 5));
-                case 1 -> new Car("CAR-" + UUID.randomUUID().toString().substring(0, 5));
-                default -> new Truck("TRK-" + UUID.randomUUID().toString().substring(0, 5));
-            };
+        Runnable parkTask =
+                () -> {
+                    Vehicle vehicle;
+                    // Randomly decide vehicle type
+                    int rand = new Random().nextInt(3);
+                    vehicle =
+                            switch (rand) {
+                                case 0 -> new MotorCycle("MC-" + UUID.randomUUID().toString().substring(0, 5));
+                                case 1 -> new Car("CAR-" + UUID.randomUUID().toString().substring(0, 5));
+                                default -> new Truck("TRK-" + UUID.randomUUID().toString().substring(0, 5));
+                            };
 
-            try {
-                ParkingTicket ticket = parkingLot.parkVehicle(vehicle);
-                tickets.add(ticket);
-            } catch (Exception e) {
-                log.info("Failed to park vehicle: {}. Reason: {}",
-                        vehicle.getLicensePlate(),
-                        e.getMessage());
-            }
-        };
+                    try {
+                        ParkingTicket ticket = parkingLot.parkVehicle(vehicle);
+                        tickets.add(ticket);
+                    } catch (Exception e) {
+                        log.info(
+                                "Failed to park vehicle: {}. Reason: {}",
+                                vehicle.getLicensePlate(),
+                                e.getMessage());
+                    }
+                };
 
         // Simulate Unparking Vehicles
-        Runnable unparkTask = () -> {
-            if (!tickets.isEmpty()) {
-                ParkingTicket ticket;
-                synchronized (tickets) {
-                    if (tickets.isEmpty()) {
-                        return;
+        Runnable unparkTask =
+                () -> {
+                    if (!tickets.isEmpty()) {
+                        ParkingTicket ticket;
+                        synchronized (tickets) {
+                            if (tickets.isEmpty()) {
+                                return;
+                            }
+                            ticket = tickets.remove(0);
+                        }
+                        try {
+                            parkingLot.unparkVehicle(ticket.getTicketId());
+                        } catch (Exception e) {
+                            log.info(
+                                    "Failed to unpark vehicle with Ticket ID: {}. Reason: {}",
+                                    ticket.getTicketId(),
+                                    e.getMessage());
+                        }
                     }
-                    ticket = tickets.remove(0);
-                }
-                try {
-                    parkingLot.unparkVehicle(ticket.getTicketId());
-                } catch (Exception e) {
-                    log.info("Failed to unpark vehicle with Ticket ID: {}. Reason: {}",
-                            ticket.getTicketId(),
-                            e.getMessage());
-                }
-            }
-        };
+                };
 
         // Submit Parking Tasks
         for (int i = 0; i < 15; i++) {
