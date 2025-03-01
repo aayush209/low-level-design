@@ -1,0 +1,18 @@
+package lrucache;
+
+import java.util.Map;
+
+public class Node<K, V> {
+
+    K key;
+    V value;
+    Node<K, V> prev;
+    Node<K, V> next;
+
+    private Map<String, Integer> map;
+
+    public Node(K key, V value){
+        this.key = key;
+        this.value = value;
+    }
+}
