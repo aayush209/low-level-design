@@ -45,8 +45,8 @@ public class ParkingLotSystemDemo {
         }
 
         // Initialize Levels
-        Level level1 = new Level(1, level1Spots);
-        Level level2 = new Level(2, level2Spots);
+        Level level1 = new Level(1, level1Spots, new DisplayBoard(1, level1Spots));
+        Level level2 = new Level(2, level2Spots, new DisplayBoard(2, level2Spots));
 
         // Initialize Parking Lot
         int numEntryGates = 3;
@@ -58,6 +58,9 @@ public class ParkingLotSystemDemo {
 
         // List to keep track of tickets
         List<ParkingTicket> tickets = Collections.synchronizedList(new ArrayList<>());
+
+        level1.showFloorVacancy();
+        level2.showFloorVacancy();
 
         // Simulate Parking Vehicles
         Runnable parkTask =
@@ -137,11 +140,17 @@ public class ParkingLotSystemDemo {
 
         // Board to track Available Spots at this instant
         log.info("\n-------------------------");
+        log.info("|    Common Display  ");
+        log.info("\n-------------------------");
         log.info("|    Available Spots ");
         for (Map.Entry<VehicleType, Long> entry : availability.entrySet()) {
             log.info("-------------------------");
             log.info("|     {} : {}     ", entry.getKey(), entry.getValue());
         }
         log.info("-------------------------");
+
+        level1.showFloorVacancy();
+        level2.showFloorVacancy();
+
     }
 }

@@ -9,11 +9,13 @@ public class Level {
 
     private final int levelNumber;
     private final List<ParkingSpot> spots;
+    private final DisplayBoard displayBoard;
     private final ReentrantLock lock = new ReentrantLock();
 
-    public Level(int levelNumber, List<ParkingSpot> spots) {
+    public Level(int levelNumber, List<ParkingSpot> spots, DisplayBoard displayBoard) {
         this.levelNumber = levelNumber;
         this.spots = spots;
+        this.displayBoard = new DisplayBoard(levelNumber, spots);
     }
 
     public int getLevelNumber() {
@@ -31,6 +33,7 @@ public class Level {
             for (ParkingSpot spot : spots) {
                 if (!spot.isOccupied() && spot.canFitVehicle(vehicle.getVehicleType())) {
                     if (spot.assignVehicle(vehicle)) {
+                        displayBoard.updateSpot(vehicle.getVehicleType(), true);
                         return spot;
                     }
                 }
@@ -46,6 +49,7 @@ public class Level {
         try {
             for (ParkingSpot spot : spots) {
                 if (spot.getSpotId().equals(spotId) && spot.isOccupied()) {
+                    displayBoard.updateSpot(spot.getType(), false);
                     return spot.removeVehicle();
                 }
             }
@@ -59,5 +63,9 @@ public class Level {
         return (int) spots.stream()
                 .filter(s -> !s.isOccupied() && s.canFitVehicle(type))
                 .count();
+    }
+
+    public void showFloorVacancy() {
+        displayBoard.showVacancy();
     }
 }
