@@ -1,7 +1,6 @@
 package parkinglot;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.locks.ReentrantLock;
 import parkinglot.vehicle.Vehicle;
 import parkinglot.vehicle.VehicleType;
@@ -25,17 +24,18 @@ public class Level {
         return spots;
     }
 
-    public Optional<ParkingSpot> parkVehicle(Vehicle vehicle) {
+    public ParkingSpot findParkingSpot(Vehicle vehicle) {
         lock.lock();
         try {
+            // search for spot which is free and can fit the current vehic;e
             for (ParkingSpot spot : spots) {
                 if (!spot.isOccupied() && spot.canFitVehicle(vehicle.getVehicleType())) {
                     if (spot.assignVehicle(vehicle)) {
-                        return Optional.of(spot);
+                        return spot;
                     }
                 }
             }
-            return Optional.empty();
+            return null;
         } finally {
             lock.unlock();
         }
@@ -55,7 +55,9 @@ public class Level {
         }
     }
 
-    public long getAvailableSpots(VehicleType type) {
-        return spots.stream().filter(s -> !s.isOccupied() && s.canFitVehicle(type)).count();
+    public int getAvailableSpots(VehicleType type) {
+        return (int) spots.stream()
+                .filter(s -> !s.isOccupied() && s.canFitVehicle(type))
+                .count();
     }
 }

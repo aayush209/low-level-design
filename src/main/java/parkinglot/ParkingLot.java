@@ -1,12 +1,14 @@
 package parkinglot;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.slf4j.Slf4j;
+import parkinglot.gates.EntryGate;
+import parkinglot.gates.ExitGate;
 import parkinglot.vehicle.Vehicle;
 import parkinglot.vehicle.VehicleType;
 
@@ -14,34 +16,54 @@ import parkinglot.vehicle.VehicleType;
 public class ParkingLot {
 
     private final List<Level> levels;
-    private final Map<UUID, ParkingTicket> activeTickets = new ConcurrentHashMap<>();
+    private final Map<Integer, ParkingTicket> activeTickets = new ConcurrentHashMap<>();
+    private final Map<Integer, EntryGate> entryGates;
+    private final Map<Integer, ExitGate> exitGates;
 
-    public ParkingLot(List<Level> levels) {
+    public ParkingLot(List<Level> levels, int numEntryGates, int numExitGates) {
         this.levels = levels;
+        this.entryGates = new HashMap<>();
+        this.exitGates = new HashMap<>();
+        initializeEntryGates(numEntryGates, entryGates);
+        initializeExitGates(numExitGates, exitGates);
     }
 
-    public ParkingTicket parkVehicle(Vehicle vehicle) throws Exception {
-        for (Level level : levels) {
-            Optional<ParkingSpot> spot = level.parkVehicle(vehicle);
-            if (spot.isPresent()) {
-                ParkingTicket ticket = new ParkingTicket(spot.get().getSpotId(), vehicle);
-                activeTickets.put(ticket.getTicketId(), ticket);
-                log.info(
-                        "Parked Vehicle: {} at Spot: {} on Level: {}",
-                        vehicle.getLicensePlate(),
-                        spot.get().getSpotId(),
-                        level.getLevelNumber());
-                return ticket;
-            }
+    private void initializeEntryGates(int numEntryGates, Map<Integer, EntryGate> entryGates) {
+        for (int index = 1; index <= numEntryGates; index++){
+            entryGates.put(index, new EntryGate(index));
         }
-        throw new Exception("No available parking spots for vehicle type: " + vehicle.getVehicleType());
     }
 
-    public void unparkVehicle(UUID ticketId) throws Exception {
-        ParkingTicket ticket = activeTickets.remove(ticketId);
+    private void initializeExitGates(int numExitGates, Map<Integer, ExitGate> exitGates) {
+        for (int index = 1; index <= numExitGates; index++){
+            exitGates.put(index, new ExitGate(index));
+        }
+    }
+
+    public ParkingTicket parkVehicle(Vehicle vehicle, int entryGateNumber) {
+        EntryGate entryGate = entryGates.get(entryGateNumber);
+            ParkingTicket parkingTicket = entryGate.issueTicket(levels, vehicle);
+            if(parkingTicket != null){
+                // add ticket to active tickets
+                activeTickets.put(parkingTicket.getTicketId(), parkingTicket);
+                return parkingTicket;
+            }
+
+            return null;
+    }
+
+    public void unparkVehicle(int ticketNumber, int exitGateNumber) throws Exception {
+        // remove ticket from active tickets
+        ParkingTicket ticket = activeTickets.remove(ticketNumber);
         if (ticket == null) {
             throw new Exception("Invalid Ticket ID");
         }
+        exitGates.get(exitGateNumber).processPayment(ticket);
+        log.info("Payment processed for {} with license plate : {} against ticket number :{}",
+                ticket.getVehicle().getVehicleType(),
+                ticket.getVehicle().getLicensePlate(),
+                ticketNumber);
+
         String spotId = ticket.getSpotId();
         boolean unparked = false;
         for (Level level : levels) {

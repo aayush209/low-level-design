@@ -49,7 +49,9 @@ public class ParkingLotSystemDemo {
         Level level2 = new Level(2, level2Spots);
 
         // Initialize Parking Lot
-        ParkingLot parkingLot = new ParkingLot(Arrays.asList(level1, level2));
+        int numEntryGates = 3;
+        int numExitGates = 3;
+        ParkingLot parkingLot = new ParkingLot(Arrays.asList(level1, level2), numEntryGates, numExitGates);
 
         // Executor Service to Simulate Concurrent Entry and Exit
         ExecutorService executor = Executors.newFixedThreadPool(10);
@@ -70,8 +72,9 @@ public class ParkingLotSystemDemo {
                                 default -> new Truck("TRK-" + UUID.randomUUID().toString().substring(0, 5));
                             };
 
+                    int entryGateDecider = new Random().nextInt(numEntryGates) + 1;
                     try {
-                        ParkingTicket ticket = parkingLot.parkVehicle(vehicle);
+                        ParkingTicket ticket = parkingLot.parkVehicle(vehicle, entryGateDecider);
                         tickets.add(ticket);
                     } catch (Exception e) {
                         log.info(
@@ -93,7 +96,8 @@ public class ParkingLotSystemDemo {
                             ticket = tickets.remove(0);
                         }
                         try {
-                            parkingLot.unparkVehicle(ticket.getTicketId());
+                            int exitGateDecider = new Random().nextInt(numExitGates) + 1;
+                            parkingLot.unparkVehicle(ticket.getTicketId(), exitGateDecider);
                         } catch (Exception e) {
                             log.info(
                                     "Failed to unpark vehicle with Ticket ID: {}. Reason: {}",
@@ -130,10 +134,14 @@ public class ParkingLotSystemDemo {
 
         // Display Available Spots
         Map<VehicleType, Long> availability = parkingLot.getAvailableSpots();
-        log.info("\nAvailable Spots:");
 
+        // Board to track Available Spots at this instant
+        log.info("\n-------------------------");
+        log.info("|    Available Spots ");
         for (Map.Entry<VehicleType, Long> entry : availability.entrySet()) {
-            log.info("{} : {}", entry.getKey(), entry.getValue());
+            log.info("-------------------------");
+            log.info("|     {} : {}     ", entry.getKey(), entry.getValue());
         }
+        log.info("-------------------------");
     }
 }

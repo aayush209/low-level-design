@@ -1,7 +1,9 @@
 package uber.entities;
 
+import lombok.Getter;
 import uber.enums.Rating;
 
+@Getter
 public class Driver {
 
     private final String name;
@@ -18,11 +20,4 @@ public class Driver {
         this.available = available;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public Rating getRating() {
-        return rating;
-    }
 }
