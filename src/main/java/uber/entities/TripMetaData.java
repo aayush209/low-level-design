@@ -1,7 +1,9 @@
 package uber.entities;
 
+import lombok.Getter;
 import uber.enums.Rating;
 
+@Getter
 public class TripMetaData {
 
     private Location srcLoc;
@@ -14,14 +16,6 @@ public class TripMetaData {
         this.dstLoc = dstLoc;
         this.riderRating = riderRating;
         this.driverRating = Rating.UNASSIGNED;
-    }
-
-    public Rating getRiderRating() {
-        return riderRating;
-    }
-
-    public Rating getDriverRating() {
-        return driverRating;
     }
 
     public void setDriverRating(Rating driverRating) {
