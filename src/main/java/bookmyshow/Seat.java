@@ -1,13 +1,15 @@
 package bookmyshow;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class Seat {
 
     private final int seatNumber;
-    private boolean isBooked;
+    private final AtomicBoolean isBooked;
 
     public Seat(int seatNumber) {
         this.seatNumber = seatNumber;
-        this.isBooked = false;
+        this.isBooked = new AtomicBoolean(false);
     }
 
     public int getSeatNumber() {
@@ -15,14 +17,14 @@ public class Seat {
     }
 
     public boolean isBooked() {
-        return isBooked;
+        return isBooked.get();
     }
 
-    public void book() {
-        this.isBooked = true;
+    public boolean book() {
+        return isBooked.compareAndSet(false, true);
     }
 
-    public void unbook() {
-        this.isBooked = false;
+    public boolean unbook() {
+        return isBooked.compareAndSet(true, false);
     }
 }

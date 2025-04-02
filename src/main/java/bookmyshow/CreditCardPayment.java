@@ -4,7 +4,8 @@ public class CreditCardPayment implements PaymentStrategy {
 
     @Override
     public boolean processPayment(double amount) {
-        System.out.println("Processing payment of " + amount + " using Credit Card.");
-        return true;  // Simulating successful payment
+        // Simulating successful payment
+        System.out.println("Processing credit card payment for amount: $" + amount);
+        return true;  // Always return true for demo
     }
 }

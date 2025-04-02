@@ -1,5 +1,6 @@
 package bookmyshow;
 
+import bookmyshow.SearchService.ShowInfo;
 import java.util.Date;
 import java.util.List;
 
@@ -11,23 +12,26 @@ public class MovieSearchController {
         this.searchService = searchService;
     }
 
-    public List<Movie> searchByTitle(String title) {
-        return searchService.searchByTitle(title);
+    public List<Movie> searchMovies(String searchCriteria, String value) {
+        switch (searchCriteria.toLowerCase()) {
+            case "title":
+                return searchService.searchByTitle(value);
+            case "genre":
+                return searchService.searchByGenre(value);
+            case "language":
+                return searchService.searchByLanguage(value);
+            case "city":
+                return searchService.searchByCity(value);
+            default:
+                throw new IllegalArgumentException("Invalid search criteria");
+        }
     }
 
-    public List<Movie> searchByGenre(String genre) {
-        return searchService.searchByGenre(genre);
-    }
-
-    public List<Movie> searchByLanguage(String language) {
-        return searchService.searchByLanguage(language);
-    }
-
-    public List<Movie> searchByCity(String city) {
-        return searchService.searchByCity(city);
-    }
-
-    public List<Movie> searchByReleaseDate(Date releaseDate) {
+    public List<Movie> searchMoviesByReleaseDate(Date releaseDate) {
         return searchService.searchByReleaseDate(releaseDate);
+    }
+
+    public List<ShowInfo> getMovieShowDetails(Movie movie, String city) {
+        return searchService.getShowDetails(movie, city);
     }
 }

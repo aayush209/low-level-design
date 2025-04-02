@@ -7,7 +7,7 @@ public class Theater {
 
     private final String name;
     private final String city;
-    private final List<CinemaHall> cinemaHalls;
+    private List<CinemaHall> cinemaHalls;
 
     public Theater(String name, String city) {
         this.name = name;
@@ -29,5 +29,9 @@ public class Theater {
 
     public void addCinemaHall(CinemaHall hall) {
         this.cinemaHalls.add(hall);
+    }
+
+    public void setCinemaHalls(List<CinemaHall> cinemaHalls) {
+        this.cinemaHalls = cinemaHalls;
     }
 }
