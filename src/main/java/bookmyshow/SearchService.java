@@ -47,12 +47,14 @@ public class SearchService implements MovieSearchable {
 
     @Override
     public List<Movie> searchByCity(String city) {
-        List<Movie> result = new ArrayList<>();
-        for (Movie movie : movies) {
-            // You would need to have a city info in Movie or Theater
-            // For simplicity, assuming city is in the Theater
-        }
-        return result;
+//        List<Movie> result = new ArrayList<>();
+//        for (Theater theater : theaters) { // Ensure theaters are initialized
+//            if (theater.getCity().equalsIgnoreCase(city)) {
+//                result.addAll(theater.getMovies()); // Fetch movies from theaters in the city
+//            }
+//        }
+//        return result;
+        return new ArrayList<>();
     }
 
     @Override
