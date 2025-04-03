@@ -9,12 +9,12 @@ public class TextEditorDemo {
     public static void main(String[] args) {
         System.out.println("=== Advanced TextEditor Demo ===\n");
         
-        // Create editor with text change listener
+        // Observer Pattern: Demonstrating event handling with lambda expressions
         TextEditor editor = new TextEditor();
         editor.addTextChangeListener((newText, cursorPos) -> 
             System.out.println("Text changed: " + newText + " (cursor at: " + cursorPos + ")"));
         
-        // Test Case 1: Basic Operations with Undo/Redo
+        // Command Pattern: Demonstrating undo/redo operations
         System.out.println("Test Case 1: Basic Operations with Undo/Redo");
         editor.addText("Hello");
         editor.addText(" World");
@@ -26,8 +26,10 @@ public class TextEditorDemo {
         System.out.println();
         
         // Test Case 2: Thread Safety Demonstration
+        // Strategy Pattern: Demonstrating thread-safe operations
         System.out.println("Test Case 2: Thread Safety");
         TextEditor threadSafeEditor = new TextEditor();
+        // Strategy Pattern: Different strategies for read and write operations
         Runnable writer = () -> {
             for (int i = 0; i < 100; i++) {
                 threadSafeEditor.addText("a");
@@ -53,6 +55,7 @@ public class TextEditorDemo {
         System.out.println();
         
         // Test Case 3: Complex Operations
+        // Command Pattern: Demonstrating complex operations with undo
         System.out.println("Test Case 3: Complex Operations");
         TextEditor complexEditor = new TextEditor();
         complexEditor.addText("Hello World");
@@ -66,6 +69,7 @@ public class TextEditorDemo {
         System.out.println();
         
         // Test Case 4: Edge Cases and Error Handling
+        // Strategy Pattern: Demonstrating error handling strategies
         System.out.println("Test Case 4: Edge Cases and Error Handling");
         TextEditor edgeEditor = new TextEditor();
         
@@ -96,6 +100,7 @@ public class TextEditorDemo {
         System.out.println();
         
         // Test Case 5: Performance Optimization
+        // Template Method Pattern: Demonstrating caching strategy
         System.out.println("Test Case 5: Performance Optimization");
         TextEditor perfEditor = new TextEditor();
         StringBuilder largeText = new StringBuilder();
@@ -113,6 +118,7 @@ public class TextEditorDemo {
         System.out.println();
         
         // Test Case 6: Observer Pattern
+        // Observer Pattern: Demonstrating multiple observers
         System.out.println("Test Case 6: Observer Pattern");
         TextEditor observerEditor = new TextEditor();
         observerEditor.addTextChangeListener((text, pos) -> 
