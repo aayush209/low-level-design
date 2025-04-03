@@ -1,0 +1,7 @@
+The problem requires us to design a simple text editor with basic functionalities such as adding text, deleting text, and moving the cursor left or right. Unlike standard text editors that deal with complex rendering and formatting, our task is to simulate how the internal state of the text editor changes as these operations are performed. The editor will keep track of the cursor position and allow the following actions:
+
+Add text: Insert a given string of text where the cursor is currently positioned. After the text is added, the cursor should be at the end of the newly added text.
+Delete text: Remove a specified number of characters from the text, directly to the left of the cursor position. The function should return the actual number of characters deleted, which could be less than the requested if there are not enough characters.
+Move cursor left: Shift the cursor to the left 'k' positions. If there aren't 'k' characters to the left of the cursor, move the cursor as far as possible. After moving, the function should return a string containing the last 10 (or fewer, if less than 10 characters are available) characters to the left of the cursor.
+Move cursor right: Shift the cursor to the right 'k' positions. Similarly, this should also return the last 10 (or fewer) characters to the left of the text where the cursor is now placed after the movement.
+The cursor is limited to the bounds of the current text content, meaning it cannot move further left than the first character or further right than the last character of the text.
